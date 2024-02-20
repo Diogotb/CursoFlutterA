@@ -34,7 +34,7 @@ class _CalculadoraState extends State<Calculadora> {
     int numero = int.tryParse(_controllerNumero1.text) as int;
 
     setState(() {
-      if(numero != null && numero){
+      if(numero != null && numero ){
 
       }
     });

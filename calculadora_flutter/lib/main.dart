@@ -114,7 +114,8 @@ class _CalculadoraState extends State<Calculadora> {
               onPressed: () => _calcular('Pot'),
               child: Text('Potência'),
             ),
-            SizedBox(height: 10.0),
+            
+              SizedBox(height: 10.0),
             ElevatedButton(
               onPressed: () => _calcular('Rai'),
               child: Text('Raiz'),
