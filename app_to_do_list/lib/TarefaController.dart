@@ -9,15 +9,17 @@ class ListaTarefasController extends ChangeNotifier {
 
   // Método para adicionar uma nova tarefa à lista
   void adicionarTarefa(String descricao) {
-    _tarefas.add(Tarefa(descricao, false));
-    // Notifica os ouvintes (widgets) sobre a mudança no estado
-    notifyListeners();
+    if (descricao.trim().isNotEmpty) {
+      _tarefas.add(Tarefa(descricao.trim(), false));
+      // Notifica os ouvintes (widgets) sobre a mudança no estado
+      notifyListeners();
+    }
   }
 
   // Método para marcar uma tarefa como concluída com base no índice
   void marcarComoConcluida(int indice) {
     if (indice >= 0 && indice < _tarefas.length) {
-      _tarefas[indice].concluida = true;
+      _tarefas[indice].concluida = !_tarefas[indice].concluida;
       // Notifica os ouvintes sobre a mudança no estado
       notifyListeners();
     }
