@@ -18,7 +18,7 @@ class TelaListaCarros extends StatelessWidget {
         itemBuilder: (context, index) {
           return ListTile(
             title: Text(controllerCarros.listarCarros[index].modelo),
-            onTap: () {
+            onTap: () { 
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -33,19 +33,56 @@ class TelaListaCarros extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           // Adicionar novo carro
-          controllerCarros.adicionarCarro(
-            "Novo Modelo",
-            2023,
-            "https://example.com/novo_modelo.jpg",
-          );
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              // Use a TextEditingController to get user input
+              TextEditingController nomeController = TextEditingController();
+              TextEditingController urlController = TextEditingController();
 
-          // Atualizar a interface
-          setState(() {});
+              return AlertDialog(
+                title: Text('Adicionar Novo Carro'),
+                content: Column(
+                  children: [
+                    TextField(
+                      controller: nomeController,
+                      decoration: InputDecoration(labelText: 'Nome do Carro'),
+                    ),
+                    TextField(
+                      controller: urlController,
+                      decoration: InputDecoration(labelText: 'URL da Imagem'),
+                    ),
+                  ],
+                ),
+                actions: [
+                  ElevatedButton(
+                    onPressed: () {
+                      // Adicionar novo carro
+                      controllerCarros.adicionarCarro(
+                        nomeController.text,
+                        2023, // You can adjust the year as needed
+                        urlController.text,
+                      );
+
+                      // Atualizar a interface
+                      Navigator.pop(context); // Close the dialog
+                    },
+                    child: Text('Adicionar'),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      // Fechar o diálogo sem adicionar o carro
+                      Navigator.pop(context);
+                    },
+                    child: Text('Cancelar'),
+                  ),
+                ],
+              );
+            },
+          );
         },
         child: Icon(Icons.add),
       ),
     );
   }
-  
-  void setState(Null Function() param0) {}
 }
