@@ -14,6 +14,8 @@ class MyApp extends StatelessWidget {
           title: Text("Exercicio 1"),
         ),
         body:Container(
+          alignment: Alignment.center,
+          width: MediaQuery.of(context).size.width,
           child:Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
