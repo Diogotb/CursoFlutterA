@@ -9,11 +9,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Lista de Tarefas', // Título do aplicativo
       theme: ThemeData(
         primarySwatch: Colors.blue, // Tema do aplicativo
       ),
       home: TaskListScreen() // Tela inicial do aplicativo
+      
     );
   }
 }
