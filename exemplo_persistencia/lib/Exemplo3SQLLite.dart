@@ -1,74 +1,144 @@
-import 'package:flutter/material.dart'; // Importação da biblioteca Flutter Material
-import 'package:sqflite/sqflite.dart'; // Importação da biblioteca SQFLite para banco de dados
-import 'package:path/path.dart'; // Importação da biblioteca path para manipulação de caminhos de arquivo
+import 'package:flutter/material.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:path/path.dart';
 
 void main() async {
-  WidgetsFlutterBinding
-      .ensureInitialized(); // Garante que os Widgets do Flutter estejam inicializados
+  WidgetsFlutterBinding.ensureInitialized();
   final database = openDatabase(
-    // Abre o banco de dados SQLite
-    join(await getDatabasesPath(),
-        'contacts_database.db'), // Junta o caminho do diretório de banco de dados com o nome do banco de dados
+    join(await getDatabasesPath(), 'contacts_database.db'),
     onCreate: (db, version) {
-      // Função a ser executada na criação do banco de dados
       return db.execute(
-        // Executa uma instrução SQL para criar a tabela de contatos
         'CREATE TABLE contacts(id INTEGER PRIMARY KEY, name TEXT, email TEXT)',
       );
     },
-    version: 1, // Versão do banco de dados
+    version: 1,
   );
-  runApp(MyApp(database: database)); // Inicializa o aplicativo Flutter
+  runApp(MaterialApp(
+    home: MyApp(database: database),
+  ));
 }
 
 class MyApp extends StatelessWidget {
-  final Future<Database> database; // Futuro representando o banco de dados
+  final Future<Database> database;
 
-  MyApp({required this.database}); // Construtor da classe MyApp
+  MyApp({required this.database});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('SQLite Demo'), // Título da barra de aplicativos
-        ),
-        body: Center(
-          child: FutureBuilder<List<Map<String, dynamic>>>(
-            future:
-                fetchContacts(), // Futuro para obter os contatos do banco de dados
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                // Se os dados estiverem disponíveis
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: snapshot.data!.map((contact) {
-                    // Mapeia os dados dos contatos para exibição
-                    return ListTile(
-                      title: Text(contact['name']), // Exibe o nome do contato
-                      subtitle:
-                          Text(contact['email']), // Exibe o email do contato
-                    );
-                  }).toList(),
-                );
-              } else if (snapshot.hasError) {
-                // Se ocorrer um erro ao obter os dados
-                return Text(
-                    'Error: ${snapshot.error}'); // Exibe mensagem de erro
-              }
-              return CircularProgressIndicator(); // Exibe indicador de progresso enquanto os dados estão sendo carregados
-            },
-          ),
-        ),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('SQLite Demo'),
+      ),
+      body: ContactList(database: database),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          await _showAddContactDialog(context);
+          await _fetchContacts();
+        },
+        child: Icon(Icons.add),
       ),
     );
   }
 
-  Future<List<Map<String, dynamic>>> fetchContacts() async {
-    // Função para obter os contatos do banco de dados
-    final Database db = await database; // Obtém o banco de dados
-    final List<Map<String, dynamic>> contacts = await db
-        .query('contacts'); // Executa uma consulta SQL para obter os contatos
-    return contacts; // Retorna a lista de contatos
+  Future<void> _showAddContactDialog(BuildContext context) async {
+    String name = '';
+    String email = '';
+
+    await showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Adicionar Contato'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                decoration: InputDecoration(labelText: 'Nome'),
+                onChanged: (value) => name = value,
+              ),
+              TextField(
+                decoration: InputDecoration(labelText: 'Email'),
+                onChanged: (value) => email = value,
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Cancelar'),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                if (name.isNotEmpty && email.isNotEmpty) {
+                  await _addContact(name, email);
+                  Navigator.of(context).pop();
+                }
+              },
+              child: Text('Adicionar'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> _addContact(String name, String email) async {
+    final Database db = await database;
+    await db.insert(
+      'contacts',
+      {'name': name, 'email': email},
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+  }
+
+  Future<List<Map<String, dynamic>>> fetchContacts(Future<Database> database) async {
+    final db = await database;
+    final List<Map<String, dynamic>> contacts = await db.query('contacts');
+    return contacts;
+  }
+
+  Future<void> _fetchContacts() async {
+    await Future.delayed(Duration(milliseconds: 300)); // Pequeno atraso para garantir que o novo contato seja salvo no banco de dados
+    final List<Map<String, dynamic>> contacts = await fetchContacts(database);
+    // Você pode fazer algo com os contatos aqui, como atualizar o estado da interface do usuário
+    print('Contatos após adicionar: $contacts');
+  }
+}
+
+class ContactList extends StatelessWidget {
+  final Future<Database> database;
+
+  ContactList({required this.database});
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: FutureBuilder<List<Map<String, dynamic>>>(
+        future: fetchContacts(database),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return ListView(
+              children: snapshot.data!.map((contact) {
+                return ListTile(
+                  title: Text(contact['name']),
+                  subtitle: Text(contact['email']),
+                );
+              }).toList(),
+            );
+          } else if (snapshot.hasError) {
+            return Text('Error: ${snapshot.error}');
+          }
+          return CircularProgressIndicator();
+        },
+      ),
+    );
+  }
+
+   Future<List<Map<String, dynamic>>> fetchContacts(Future<Database> database) async {
+    final db = await database;
+    final List<Map<String, dynamic>> contacts = await db.query('contacts');
+    return contacts;
   }
 }
