@@ -1,0 +1,18 @@
+- Tela Login
+    - acessar(email/senha) => tela interna(Lista de Tarefas)
+    - registrar( => tela Cadastro)
+
+- Tela Cadastro
+    form(nome/email/senha)/SQL
+    -voltar(login)
+
+-Tela Lista de Tarefas(shared Preferences)
+    Adicinar Tarefas
+    Listar Tarefas
+    Apagar Tarfas
+
+flutter pub add shared_preferences
+flutter pub add sqflite
+flutter pub add path
+
+
