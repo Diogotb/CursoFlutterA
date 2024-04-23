@@ -1,0 +1,22 @@
+import 'package:flutter/material.dart';
+
+import 'View/HomeView.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: "Projeto Json",
+      theme: ThemeData(
+        primarySwatch: Colors.blue
+      ),
+      home: HomePage(),
+    );
+  }
+}
