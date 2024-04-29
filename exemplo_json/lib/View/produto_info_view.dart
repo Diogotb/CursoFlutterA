@@ -16,6 +16,7 @@ class ProdutoInfoPage extends StatelessWidget {
       body: Center(
         child: Column(
           children: [
+            Image.asset(produto.foto),
             Text(produto.nome),
             Text('${produto.preco.toStringAsFixed(2)}'),
             Text(produto.categoria)
