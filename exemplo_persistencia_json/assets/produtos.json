@@ -1,1 +1,22 @@
+<<<<<<< HEAD
 []
+=======
+[
+    {
+        "nome": "CPU",
+        "preco": 599.99,
+        "categoria": "Informática"
+    },
+    {
+        "nome": "Camiseta Linux",
+        "preco": 59.90,
+        "categoria": "Vestuário"
+    },
+    {
+        "nome": "Mouse Pad",
+        "preco": 19.90,
+        "categoria": "Acessórios"
+    }
+
+]
+>>>>>>> 428d297440765348ca3f96ec54d9835ac5a0b5c4

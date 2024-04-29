@@ -23,6 +23,10 @@
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+<<<<<<< HEAD
+=======
+            <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+>>>>>>> 428d297440765348ca3f96ec54d9835ac5a0b5c4
         </activity>
         <!-- Don't delete the meta-data below.
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
@@ -30,6 +34,10 @@
             android:name="flutterEmbedding"
             android:value="2" />
     </application>
+<<<<<<< HEAD
+=======
+    
+>>>>>>> 428d297440765348ca3f96ec54d9835ac5a0b5c4
     <!-- Required to query activities that can process text, see:
          https://developer.android.com/training/package-visibility?hl=en and
          https://developer.android.com/reference/android/content/Intent#ACTION_PROCESS_TEXT.
@@ -41,4 +49,8 @@
             <data android:mimeType="text/plain"/>
         </intent>
     </queries>
+<<<<<<< HEAD
+=======
+    
+>>>>>>> 428d297440765348ca3f96ec54d9835ac5a0b5c4
 </manifest>
