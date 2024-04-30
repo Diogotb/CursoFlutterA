@@ -1,16 +1,10 @@
+
 - Pag. Inicial
-    - Cadastrar Produtos(botões)
-    - Listar Produtos(botões)
+    - Cadastrar Livros(botões)
+    - Listar Livros(botões)
 
 - Pg. Cadastro
     -formulário
-        -Id. (SERIAL)
-        -Nome (TEXT)
-        -Descrição (TEXT)
-        -Quantidade (INT)
-        -Foto (TEXT)
-        -Preço (DOuBLE)
-        -Categorias[] (List<String>)
-
+        
 - Pg. Listar(???)
-    - Clicar no Produtos => Abri as Informações do Produtos
+    - Clicar no Produtos => Abrir as Informações dos Livros

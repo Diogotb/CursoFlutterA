@@ -2,9 +2,9 @@ import 'package:exemplo_json/Model/produtos_model.dart';
 import 'package:flutter/material.dart';
 
 class ProdutoInfoPage extends StatelessWidget {
-  Produto produto;
+  Produto info;
   ProdutoInfoPage({
-    required this.produto
+    required this.info
     });
 
   @override

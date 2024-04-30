@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-
-import 'View/HomeView.dart';
+import 'package:projeto_json/View/cadastrar_livros_view.dart';
+import 'package:projeto_json/View/home_screen_view.dart';
+import 'package:projeto_json/View/listar_livros_view.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -12,11 +13,18 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: "Projeto Json",
+      title: 'Livraria Senai',
       theme: ThemeData(
-        primarySwatch: Colors.blue
+        primarySwatch: Colors.red,
       ),
-      home: HomePage(),
+      home: const HomeScreen(),
+      debugShowCheckedModeBanner: false,
+      routes: {
+        '/home': (context) => const HomeScreen(),
+        '/cadastrar': (context) => const CadastrarLivroScreen(),
+        '/listar': (context) => const ListarLivrosScreen()
+      },
+
     );
   }
 }

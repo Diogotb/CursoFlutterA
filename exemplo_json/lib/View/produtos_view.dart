@@ -37,7 +37,7 @@ class _ProdutosPageState extends State<ProdutosPage> {
                                   MaterialPageRoute(
                                       builder: (context) => 
                                       ProdutoInfoPage(
-                                        produto:controller.produtos[index]
+                                        info:controller.produtos[index]
                                         ))),
                             );
                           });
