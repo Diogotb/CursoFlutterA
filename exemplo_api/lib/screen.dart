@@ -105,15 +105,19 @@ class _WeatherScreenState extends State<WeatherScreen> {
                 FutureBuilder(
                   future: _fetchWeatherGeo(), 
                   builder: (context,snapshot){
-                    if(_we){
-
+                    if(_weatherData.isEmpty){
+                      return Center(Child:Text(''));
                     }else{
+                      return
+                      Column(
+                        children: [
                       Text(
                           'City: ${_weatherData['name']}'), // Exibe o nome da cidade.
                       Text(
                           'Temperature: ${_weatherData['main']['temp'] - 273 } °C'), // Exibe a temperatura em graus Celsius.
                       Text(
                           'Description: ${_weatherData['weather'][0]['description']}'), // Exibe a descrição do clima.
+              ]);
                     }
                   }
                   ),
