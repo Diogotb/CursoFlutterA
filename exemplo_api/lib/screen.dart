@@ -1,5 +1,6 @@
 // Importa o pacote de widgets do Flutter, que contém os widgets para construir interfaces de usuário.
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 
 // Importa o serviço WeatherService, que é responsável por obter os dados de previsão do tempo da API.
 import 'service.dart';
@@ -37,6 +38,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
         {'description':''}
       ]
     };
+    
   }
 
   // Método assíncrono para buscar os dados de previsão do tempo para uma cidade específica.
@@ -51,6 +53,20 @@ class _WeatherScreenState extends State<WeatherScreen> {
     } catch (e) {
       // Em caso de erro ao buscar os dados de previsão do tempo, exibe uma mensagem de erro no console.
       print('Error fetching weather data: $e');
+    }
+  }
+  Future<void> _fetchWeatherGeo() async{
+    try {
+      Position position = await Geolocator.getCurrentPosition(
+    desiredAccuracy: LocationAccuracy.high);
+
+    final weatherData = await _weatherService.getWeatherbyLocation(position.latitude, position.longitude);
+    setState(() {
+      _weatherData = weatherData;
+    });
+
+    } catch (e) {
+      print(e);
     }
   }
 
@@ -76,24 +92,41 @@ class _WeatherScreenState extends State<WeatherScreen> {
                       if (value!.isEmpty) {
                         return 'Insira a Cidade';
                       }
+                      return null;
                     }),
                 ElevatedButton(
                     onPressed: () {
                        _fetchWeatherData(_cityController.text);
                     },
                     child: const Text("Buscar")),
-                SizedBox(
+                const SizedBox(
                   height: 12,
                 ),
-
-                _weatherData == null
-                    ? Center(child: Text(""))
-                    : Text(
+                FutureBuilder(
+                  future: _fetchWeatherGeo(), 
+                  builder: (context,snapshot){
+                    if(_weatherData.isEmpty){
+                      return Center(Child:Text(''));
+                    }else{
+                      return
+                      Column(
+                        children: [
+                      Text(
                           'City: ${_weatherData['name']}'), // Exibe o nome da cidade.
                       Text(
                           'Temperature: ${_weatherData['main']['temp'] - 273 } °C'), // Exibe a temperatura em graus Celsius.
                       Text(
                           'Description: ${_weatherData['weather'][0]['description']}'), // Exibe a descrição do clima.
+              ]);
+                    }
+                  }
+                  ),
+
+  
+
+                _weatherData == null
+                    ? Center(child: Text(""))
+                    : 
               ],
             )),
           ),
