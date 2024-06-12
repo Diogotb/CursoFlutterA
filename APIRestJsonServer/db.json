@@ -30,5 +30,17 @@
       "nome": "Teste1",
       "preco": 20
     }
+  ],
+  "music":[
+    {
+      "title": "What I've Done",
+      "artist": "Linkin Park",
+      "url": "http://www.dominiopublico.gov.br/download/som/gu10287.mp3"
+    },
+    {
+      "title": "the Chains",
+      "artist": "Fleetwood Mac",
+      "url": "https://drive.google.com/uc?export=download&confirm=no_antivirus&id=1wLGp0WD088BJy85ynGYdNHlCKhQqFZBN"
+    }
   ]
 }
